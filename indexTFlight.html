@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="TrackingFin - Track your subscriptions, read financial blogs, and take control of your money. By MussadLab."/>
+  <meta name="keywords" content="subscription tracker, finance, budgeting, ISA, ETF, saving, investing"/>
+  <meta name="author" content="MussadLab"/>
+  <title>TrackingFin | Smart Finance Tools</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    /* ===========================
+       CSS VARIABLES — LIGHT THEME
+    =========================== */
+    :root {
+      --primary:        #00a876;
+      --primary-dark:   #007d58;
+      --primary-light:  #e6f7f2;
+      --secondary:      #1a1f36;
+      --accent:         #f59e0b;
+      --accent-light:   #fef3c7;
+
+      --bg-main:        #f4f6f9;
+      --bg-white:       #ffffff;
+      --bg-card:        #ffffff;
+      --bg-card2:       #f0f4f8;
+      --bg-section:     #eef2f7;
+
+      --text-main:      #1a202c;
+      --text-sub:       #4a5568;
+      --text-muted:     #718096;
+
+      --border:         #e2e8f0;
+      --border-focus:   #00a876;
+
+      --danger:         #e53e3e;
+      --danger-light:   #fff5f5;
+      --success:        #38a169;
+      --success-light:  #f0fff4;
+
+      --shadow-sm:      0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+      --shadow:         0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.05);
+      --shadow-md:      0 8px 28px rgba(0,0,0,0.10), 0 4px 10px rgba(0,0,0,0.06);
+      --shadow-hover:   0 12px 36px rgba(0,168,118,0.15);
+
+      --radius:         14px;
+      --radius-sm:      8px;
+      --radius-xs:      6px;
+      --transition:     0.22s ease;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; }
+    ul { list-style: none; }
+    button { cursor: pointer; border: none; outline: none; font-family: 'Inter', sans-serif; }
+
+    /* ===========================
+       SCROLLBAR
+    =========================== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-main); }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+    /* ===========================
+       NAVBAR
+    =========================== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .logo { display: flex; align-items: center; gap: 10px; }
+
+    .logo-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; font-weight: 800; color: #fff;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 0 4px 14px rgba(0,168,118,0.35);
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text { display: flex; flex-direction: column; line-height: 1.15; }
+
+    .logo-text span:first-child {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.15rem; font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .logo-text span:last-child {
+      font-size: 0.62rem; color: var(--primary);
+      font-weight: 600; letter-spacing: 1.8px; text-transform: uppercase;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+
+    .nav-links a {
+      font-size: 0.88rem; font-weight: 500;
+      color: var(--text-sub);
+      transition: color var(--transition);
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px; background: var(--primary);
+      border-radius: 2px; transition: width var(--transition);
+    }
+
+    .nav-links a:hover { color: var(--primary); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-cta {
+      background: var(--primary) !important;
+      color: #fff !important;
+      padding: 9px 22px; border-radius: 50px;
+      font-weight: 600 !important; font-size: 0.85rem !important;
+      transition: background var(--transition), box-shadow var(--transition) !important;
+      box-shadow: 0 3px 12px rgba(0,168,118,0.3);
+    }
+
+    .nav-cta:hover {
+      background: var(--primary-dark) !important;
+      box-shadow: 0 5px 18px rgba(0,168,118,0.4) !important;
+      color: #fff !important;
+    }
+
+    .nav-cta::after { display: none !important; }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; padding: 4px;
+    }
+
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--text-main); border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none;
+      position: fixed; top: 68px; left: 0; right: 0;
+      background: var(--bg-white);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 5%;
+      flex-direction: column; gap: 16px;
+      z-index: 999;
+      box-shadow: var(--shadow);
+    }
+
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 0.95rem; color: var(--text-sub); font-weight: 500; }
+    .mobile-menu a:hover { color: var(--primary); }
+
+    /* ===========================
+       HERO
+    =========================== */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 110px 5% 70px;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(0,168,118,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(245,158,11,0.05) 0%, transparent 55%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg-main) 100%);
+      position: relative; overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; top: -100px; right: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,168,118,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -80px; left: -80px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner { position: relative; z-index: 1; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--primary-light);
+      border: 1px solid rgba(0,168,118,0.25);
+      color: var(--primary);
+      padding: 7px 18px; border-radius: 50px;
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.3px; margin-bottom: 26px;
+    }
+
+    .hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 800; line-height: 1.13;
+      margin-bottom: 20px;
+      color: var(--text-main);
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--primary), #00c896);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.12rem);
+      color: var(--text-sub); max-width: 580px;
+      margin: 0 auto 38px; line-height: 1.75;
+    }
+
+    .hero-btns {
+      display: flex; gap: 14px;
+      justify-content: center; flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff; padding: 14px 32px;
+      border-radius: 50px; font-weight: 600;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 18px rgba(0,168,118,0.35);
+      transition: transform var(--transition), box-shadow var(--transition);
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,168,118,0.45);
+    }
+
+    .btn-outline {
+      background: var(--bg-white);
+      color: var(--text-main); padding: 14px 32px;
+      border-radius: 50px; font-weight: 600;
+      font-size: 0.95rem;
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: border-color var(--transition), color var(--transition), box-shadow var(--transition);
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--primary); color: var(--primary);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-stats {
+      display: flex; justify-content: center; gap: 50px;
+      margin-top: 60px; flex-wrap: wrap;
+    }
+
+    .stat { text-align: center; }
+
+    .stat strong {
+      display: block; font-size: 1.9rem; font-weight: 800;
+      font-family: 'Poppins', sans-serif; color: var(--primary);
+    }
+
+    .stat span { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; display: block; }
+
+    /* Divider Line for stats */
+    .hero-stats .stat:not(:last-child) {
+      padding-right: 50px;
+      border-right: 1px solid var(--border);
+    }
+
+    /* ===========================
+       SECTIONS SHARED
+    =========================== */
+    section { padding: 84px 5%; }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--primary); margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+      font-weight: 700; color: var(--text-main);
+      margin-bottom: 12px;
+    }
+
+    .section-sub {
+      color: var(--text-muted); font-size: 0.98rem;
+      max-width: 540px; margin-bottom: 48px;
+      line-height: 1.75;
+    }
+
+    /* ===========================
+       SUBSCRIPTION TRACKER
+    =========================== */
+    #tracker { background: var(--bg-white); }
+
+    .tracker-wrapper { max-width: 980px; margin: 0 auto; }
+
+    .tracker-header {
+      display: flex; align-items: flex-end;
+      justify-content: space-between; flex-wrap: wrap;
+      gap: 16px; margin-bottom: 32px;
+    }
+
+    /* Currency Selector */
+    .currency-selector { display: flex; align-items: center; gap: 10px; }
+
+    .currency-selector label {
+      font-size: 0.85rem; color: var(--text-muted); font-weight: 500;
+    }
+
+    .currency-selector select {
+      background: var(--bg-white);
+      border: 1.5px solid var(--border);
+      color: var(--text-main);
+      padding: 9px 14px; border-radius: var(--radius-sm);
+      font-size: 0.88rem; font-family: 'Inter', sans-serif;
+      cursor: pointer; box-shadow: var(--shadow-sm);
+      transition: border-color var(--transition);
+    }
+
+    .currency-selector select:focus {
+      border-color: var(--primary); outline: none;
+    }
+
+    /* Summary Cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+      gap: 16px; margin-bottom: 28px;
+    }
+
+    .summary-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+      position: relative; overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .summary-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .summary-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .summary-card.green::before  { background: linear-gradient(90deg, var(--primary), #00c896); }
+    .summary-card.amber::before  { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    .summary-card.red::before    { background: linear-gradient(90deg, #e53e3e, #fc8181); }
+    .summary-card.blue::before   { background: linear-gradient(90deg, #6366f1, #818cf8); }
+
+    .summary-card .card-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; margin-bottom: 14px;
+    }
+
+    .summary-card.green .card-icon { background: var(--primary-light); color: var(--primary); }
+    .summary-card.amber .card-icon { background: var(--accent-light); color: var(--accent); }
+    .summary-card.red   .card-icon { background: var(--danger-light); color: var(--danger); }
+    .summary-card.blue  .card-icon { background: #eef2ff; color: #6366f1; }
+
+    .summary-card .label {
+      font-size: 0.75rem; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 6px; font-weight: 600;
+    }
+
+    .summary-card .value {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.65rem; font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .summary-card .sub-value {
+      font-size: 0.75rem; color: var(--text-muted); margin-top: 3px;
+    }
+
+    /* Add Form */
+    .add-form {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .add-form h3 {
+      font-size: 1rem; font-weight: 600;
+      margin-bottom: 20px; color: var(--text-main);
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 7px; }
+
+    .form-group label {
+      font-size: 0.76rem; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.7px;
+    }
+
+    .form-group input,
+    .form-group select {
+      background: var(--bg-main);
+      border: 1.5px solid var(--border);
+      color: var(--text-main);
+      padding: 10px 14px; border-radius: var(--radius-sm);
+      font-size: 0.9rem; font-family: 'Inter', sans-serif;
+      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--primary);
+      outline: none;
+      background: var(--bg-white);
+      box-shadow: 0 0 0 3px rgba(0,168,118,0.1);
+    }
+
+    .form-group input::placeholder { color: #a0aec0; }
+
+    .btn-add {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff; padding: 11px 26px;
+      border-radius: var(--radius-sm);
+      font-weight: 600; font-size: 0.9rem;
+      margin-top: 20px;
+      display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 3px 12px rgba(0,168,118,0.3);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .btn-add:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,168,118,0.4);
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+
+    .filter-btn {
+      background: var(--bg-white);
+      border: 1.5px solid var(--border);
+      color: var(--text-muted);
+      padding: 7px 18px; border-radius: 50px;
+      font-size: 0.82rem; font-weight: 500;
+      transition: all var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      box-shadow: 0 3px 10px rgba(0,168,118,0.25);
+    }
+
+    /* Subscription List */
+    .sub-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .sub-item {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 22px;
+      display: flex; align-items: center;
+      gap: 16px; flex-wrap: wrap;
+      box-shadow: var(--shadow-sm);
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+      animation: fadeSlideIn 0.3s ease;
+    }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .sub-item:hover {
+      border-color: rgba(0,168,118,0.35);
+      transform: translateX(4px);
+      box-shadow: var(--shadow);
+    }
+
+    .sub-icon {
+      width: 46px; height: 46px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+    }
+
+    .sub-info { flex: 1; min-width: 120px; }
+
+    .sub-name {
+      font-weight: 600; font-size: 0.95rem; color: var(--text-main);
+    }
+
+    .sub-meta {
+      font-size: 0.76rem; color: var(--text-muted); margin-top: 2px;
+    }
+
+    .sub-badge {
+      padding: 4px 12px; border-radius: 50px;
+      font-size: 0.72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    .badge-monthly { background: #eef2ff; color: #6366f1; }
+    .badge-yearly  { background: var(--accent-light); color: #b45309; }
+    .badge-weekly  { background: var(--primary-light); color: var(--primary-dark); }
+
+    .sub-cost {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--text-main); white-space: nowrap;
+    }
+
+    .sub-renewal {
+      font-size: 0.76rem; color: var(--text-muted);
+      white-space: nowrap; min-width: 80px;
+      text-align: right;
+      background: var(--bg-section);
+      padding: 4px 10px; border-radius: 50px;
+    }
+
+    .sub-actions { display: flex; gap: 8px; }
+
+    .btn-icon {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.82rem;
+      transition: all var(--transition);
+    }
+
+    .btn-delete {
+      background: var(--danger-light);
+      color: var(--danger);
+      border: 1px solid #fed7d7;
+    }
+
+    .btn-delete:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+    .btn-edit {
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid rgba(0,168,118,0.2);
+    }
+
+    .btn-edit:hover { background: var(--primary); color: #fff; }
+
+    .empty-state {
+      text-align: center; padding: 56px 20px;
+      color: var(--text-muted);
+      background: var(--bg-white);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+    }
+
+    .empty-state i {
+      font-size: 2.8rem; margin-bottom: 14px;
+      color: #cbd5e0; display: block;
+    }
+
+    .empty-state p { font-size: 0.95rem; }
+
+    /* ===========================
+       FEATURES
+    =========================== */
+    #features { background: var(--bg-section); }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 22px; max-width: 1100px; margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(0,168,118,0.3);
+    }
+
+    .feature-icon {
+      width: 52px; height: 52px; border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.35rem; margin-bottom: 18px;
+    }
+
+    .feature-card h3 {
+      font-size: 1rem; font-weight: 600;
+      color: var(--text-main); margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 0.87rem; color: var(--text-muted); line-height: 1.75;
+    }
+
+    /* ===========================
+       BLOG
+    =========================== */
+    #blog { background: var(--bg-white); }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px; max-width: 1100px; margin: 0 auto;
+    }
+
+    .blog-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+
+    .blog-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(0,168,118,0.25);
+    }
+
+    .blog-thumb {
+      height: 185px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem; position: relative;
+    }
+
+    .blog-tag {
+      position: absolute; top: 14px; left: 14px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(0,168,118,0.25);
+      color: var(--primary);
+      padding: 4px 13px; border-radius: 50px;
+      font-size: 0.71rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.7px;
+      backdrop-filter: blur(6px);
+    }
+
+    .blog-body { padding: 24px; }
+
+    .blog-meta {
+      font-size: 0.74rem; color: var(--text-muted);
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .blog-body h3 {
+      font-size: 1.02rem; font-weight: 600;
+      color: var(--text-main); margin-bottom: 10px; line-height: 1.45;
+    }
+
+    .blog-body p {
+      font-size: 0.85rem; color: var(--text-muted);
+      line-height: 1.75; margin-bottom: 18px;
+    }
+
+    .btn-read {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--primary); font-size: 0.85rem; font-weight: 600;
+      transition: gap var(--transition);
+    }
+
+    .btn-read:hover { gap: 10px; }
+
+    /* ===========================
+       COMING SOON
+    =========================== */
+    #coming-soon { background: var(--bg-section); }
+
+    .coming-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 20px; max-width: 920px; margin: 0 auto;
+    }
+
+    .coming-card {
+      background: var(--bg-white);
+      border: 1.5px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 28px 22px; text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+
+    .coming-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .coming-card i { font-size: 2.2rem; margin-bottom: 14px; display: block; }
+
+    .coming-card h4 {
+      font-size: 0.95rem; font-weight: 600;
+      color: var(--text-main); margin-bottom: 7px;
+    }
+
+    .coming-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+
+    .coming-label {
+      display: inline-block; margin-top: 12px;
+      background: var(--accent-light);
+      border: 1px solid rgba(245,158,11,0.3);
+      color: #b45309;
+      padding: 3px 12px; border-radius: 50px;
+      font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    /* ===========================
+       NEWSLETTER
+    =========================== */
+    #newsletter {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+
+    #newsletter::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 50%; pointer-events: none;
+    }
+
+    #newsletter::after {
+      content: '';
+      position: absolute; bottom: -80px; left: -40px;
+      width: 250px; height: 250px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%; pointer-events: none;
+    }
+
+    .newsletter-box { max-width: 540px; margin: 0 auto; position: relative; z-index: 1; }
+
+    #newsletter .section-label { color: rgba(255,255,255,0.75); }
+    #newsletter .section-title { color: #fff; }
+
+    #newsletter p {
+      color: rgba(255,255,255,0.8); font-size: 0.97rem; line-height: 1.7;
+    }
+
+    .newsletter-form {
+      display: flex; gap: 10px; margin-top: 30px; flex-wrap: wrap;
+    }
+
+    .newsletter-form input {
+      flex: 1; min-width: 220px;
+      background: rgba(255,255,255,0.15);
+      border: 1.5px solid rgba(255,255,255,0.3);
+      color: #fff;
+      padding: 13px 20px; border-radius: 50px;
+      font-size: 0.9rem; font-family: 'Inter', sans-serif;
+      backdrop-filter: blur(6px);
+      transition: border-color var(--transition), background var(--transition);
+    }
+
+    .newsletter-form input:focus {
+      border-color: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.22);
+      outline: none;
+    }
+
+    .newsletter-form input::placeholder { color: rgba(255,255,255,0.6); }
+
+    .btn-subscribe {
+      background: #fff;
+      color: var(--primary);
+      padding: 13px 28px; border-radius: 50px;
+      font-weight: 700; font-size: 0.9rem;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .btn-subscribe:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(0,0,0,0.18);
+    }
+
+    /* ===========================
+       FOOTER
+    =========================== */
+    footer {
+      background: var(--secondary);
+      padding: 56px 5% 28px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.6fr repeat(3, 1fr);
+      gap: 44px; margin-bottom: 44px;
+    }
+
+    .footer-brand .logo-text span:first-child { color: #fff; }
+
+    .footer-brand p {
+      font-size: 0.85rem; color: #8892a4;
+      margin-top: 16px; line-height: 1.75;
+      max-width: 240px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.8rem; font-weight: 700;
+      color: #fff; margin-bottom: 18px;
+      text-transform: uppercase; letter-spacing: 1.2px;
+    }
+
+    .footer-col a {
+      display: block; font-size: 0.85rem;
+      color: #8892a4; margin-bottom: 11px;
+      transition: color var(--transition);
+    }
+
+    .footer-col a:hover { color: var(--primary); }
+
+    .footer-bottom {
+      border-top: 1px solid #2a3146;
+      padding-top: 26px;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 14px;
+    }
+
+    .footer-bottom p { font-size: 0.8rem; color: #8892a4; }
+    .footer-bottom span { color: var(--primary); }
+
+    .social-links { display: flex; gap: 10px; }
+
+    .social-links a {
+      width: 36px; height: 36px; border-radius: 9px;
+      background: #2a3146;
+      border: 1px solid #3a4256;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; color: #8892a4;
+      transition: all var(--transition);
+    }
+
+    .social-links a:hover {
+      background: var(--primary); color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* ===========================
+       TOAST
+    =========================== */
+    .toast {
+      position: fixed; bottom: 28px; right: 28px;
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 14px 20px; border-radius: var(--radius);
+      font-size: 0.88rem; font-weight: 500;
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: var(--shadow-md); z-index: 9999;
+      transform: translateY(80px); opacity: 0;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success i { color: var(--success); }
+    .toast.error   i { color: var(--danger); }
+
+    /* ===========================
+       RESPONSIVE
+    =========================== */
+    @media (max-width: 900px) {
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .tracker-header { flex-direction: column; align-items: flex-start; }
+      .form-grid { grid-template-columns: 1fr 1fr; }
+      .hero-stats .stat:not(:last-child) { padding-right: 0; border-right: none; }
+      .hero-stats { gap: 28px; }
+    }
+
+    @media (max-width: 480px) {
+      .footer-top { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .hero-stats { flex-direction: column; gap: 20px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">
+      <div class="logo-icon">TF</div>
+      <div class="logo-text">
+        <span>TrackingFin</span>
+        <span>by MussadLab</span>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#tracker">Tracker</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#coming-soon">Coming Soon</a></li>
+      <li><a href="#newsletter" class="nav-cta">Subscribe</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#tracker"     onclick="toggleMenu()">Tracker</a>
+    <a href="#features"    onclick="toggleMenu()">Features</a>
+    <a href="#blog"        onclick="toggleMenu()">Blog</a>
+    <a href="#coming-soon" onclick="toggleMenu()">Coming Soon</a>
+    <a href="#newsletter"  onclick="toggleMenu()">Subscribe</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <i class="fas fa-bolt"></i> Smart Finance Tools — Free to Use
+      </div>
+      <h1>Take Control of Your<br/><span>Subscriptions & Money</span></h1>
+      <p>Track every subscription you pay for, see exactly where your money goes, and read expert finance blogs — all in one clean place.</p>
+      <div class="hero-btns">
+        <a href="#tracker" class="btn-primary">
+          <i class="fas fa-chart-pie"></i> Start Tracking Free
+        </a>
+        <a href="#blog" class="btn-outline">
+          <i class="fas fa-book-open"></i> Read Blogs
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <strong>8+</strong>
+          <span>Currencies Supported</span>
+        </div>
+        <div class="stat">
+          <strong>100%</strong>
+          <span>Free to Use</span>
+        </div>
+        <div class="stat">
+          <strong>∞</strong>
+          <span>Subscriptions to Track</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUBSCRIPTION TRACKER -->
+  <section id="tracker">
+    <div class="tracker-wrapper">
+      <div class="tracker-header">
+        <div>
+          <span class="section-label"><i class="fas fa-credit-card"></i> Subscription Tracker</span>
+          <h2 class="section-title">Track All Your Subscriptions</h2>
+          <p class="section-sub">Add every service you pay for and instantly see your total spend.</p>
+        </div>
+        <div class="currency-selector">
+          <label for="currency"><i class="fas fa-coins"></i> Currency:</label>
+          <select id="currency" onchange="changeCurrency()">
+            <option value="GBP">🇬🇧 GBP — British Pound</option>
+            <option value="USD">🇺🇸 USD — US Dollar</option>
+            <option value="AUD">🇦🇺 AUD — Australian Dollar</option>
+            <option value="CAD">🇨🇦 CAD — Canadian Dollar</option>
+            <option value="EUR">🇪🇺 EUR — Euro</option>
+            <option value="INR">🇮🇳 INR — Indian Rupee</option>
+            <option value="NZD">🇳🇿 NZD — New Zealand Dollar</option>
+            <option value="SGD">🇸🇬 SGD — Singapore Dollar</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Summary Cards -->
+      <div class="summary-cards">
+        <div class="summary-card green">
+          <div class="card-icon"><i class="fas fa-calendar-day"></i></div>
+          <div class="label">Monthly Spend</div>
+          <div class="value" id="totalMonthly">£0.00</div>
+          <div class="sub-value">All active subscriptions</div>
+        </div>
+        <div class="summary-card amber">
+          <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
+          <div class="label">Annual Spend</div>
+          <div class="value" id="totalAnnual">£0.00</div>
+          <div class="sub-value">Projected yearly cost</div>
+        </div>
+        <div class="summary-card red">
+          <div class="card-icon"><i class="fas fa-clock"></i></div>
+          <div class="label">Daily Cost</div>
+          <div class="value" id="totalDaily">£0.00</div>
+          <div class="sub-value">Average per day</div>
+        </div>
+        <div class="summary-card blue">
+          <div class="card-icon"><i class="fas fa-list-check"></i></div>
+          <div class="label">Total Subs</div>
+          <div class="value" id="totalCount">0</div>
+          <div class="sub-value">Active subscriptions</div>
+        </div>
+      </div>
+
+      <!-- Add Form -->
+      <div class="add-form">
+        <h3><i class="fas fa-plus-circle" style="color:var(--primary)"></i> Add New Subscription</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Service Name</label>
+            <input type="text" id="subName" placeholder="e.g. Netflix" maxlength="30"/>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select id="subCategory">
+              <option value="streaming">🎬 Streaming</option>
+              <option value="music">🎵 Music</option>
+              <option value="software">💻 Software</option>
+              <option value="gaming">🎮 Gaming</option>
+              <option value="news">📰 News & Media</option>
+              <option value="health">❤️ Health & Fitness</option>
+              <option value="education">📚 Education</option>
+              <option value="finance">💰 Finance</option>
+              <option value="cloud">☁️ Cloud Storage</option>
+              <option value="other">📦 Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Cost</label>
+            <input type="number" id="subCost" placeholder="9.99" step="0.01" min="0"/>
+          </div>
+          <div class="form-group">
+            <label>Billing Cycle</label>
+            <select id="subCycle">
+              <option value="monthly">Monthly</option>
+              <option value="yearly">Yearly</option>
+              <option value="weekly">Weekly</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Renewal Date</label>
+            <input type="date" id="subRenewal"/>
+          </div>
+          <div class="form-group">
+            <label>Notes (optional)</label>
+            <input type="text" id="subNotes" placeholder="e.g. Family plan"/>
+          </div>
+        </div>
+        <button class="btn-add" onclick="addSubscription()">
+          <i class="fas fa-plus"></i> Add Subscription
+        </button>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterSubs('all', this)">All</button>
+        <button class="filter-btn" onclick="filterSubs('streaming', this)">🎬 Streaming</button>
+        <button class="filter-btn" onclick="filterSubs('music', this)">🎵 Music</button>
+        <button class="filter-btn" onclick="filterSubs('software', this)">💻 Software</button>
+        <button class="filter-btn" onclick="filterSubs('gaming', this)">🎮 Gaming</button>
+        <button class="filter-btn" onclick="filterSubs('other', this)">📦 Other</button>
+      </div>
+
+      <!-- Sub List -->
+      <div class="sub-list" id="subList">
+        <div class="empty-state">
+          <i class="fas fa-receipt"></i>
+          <p>No subscriptions yet — add your first one above!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div style="text-align:center; margin-bottom:52px;">
+      <span class="section-label">Why TrackingFin?</span>
+      <h2 class="section-title">Everything You Need to Save More</h2>
+      <p class="section-sub" style="margin:0 auto;">Simple, powerful tools to help you understand and control your finances.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background:var(--primary-light); color:var(--primary)">
+          <i class="fas fa-eye"></i>
+        </div>
+        <h3>Full Visibility</h3>
+        <p>See every subscription in one clean dashboard. No more forgotten charges draining your bank account.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#eef2ff; color:#6366f1">
+          <i class="fas fa-globe"></i>
+        </div>
+        <h3>Multi-Currency</h3>
+        <p>Track in GBP, USD, AUD, CAD, EUR, INR and more. Perfect for users all over the world.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:var(--accent-light); color:var(--accent)">
+          <i class="fas fa-bell"></i>
+        </div>
+        <h3>Renewal Awareness</h3>
+        <p>Know exactly when each subscription renews so you're never surprised by an unexpected charge.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:var(--danger-light); color:var(--danger)">
+          <i class="fas fa-chart-bar"></i>
+        </div>
+        <h3>Spend Analysis</h3>
+        <p>See your monthly, yearly, and daily spend break down instantly as you add subscriptions.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:var(--success-light); color:var(--success)">
+          <i class="fas fa-filter"></i>
+        </div>
+        <h3>Smart Filtering</h3>
+        <p>Filter by category — streaming, software, gaming and more — to quickly spot savings.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:var(--primary-light); color:var(--primary)">
+          <i class="fas fa-lock"></i>
+        </div>
+        <h3>Private & Secure</h3>
+        <p>All your data stays in your browser. No account required. Nothing sent to any server.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section id="blog">
+    <span class="section-label"><i class="fas fa-pen-nib"></i> Finance Insights</span>
+    <h2 class="section-title">Latest Blogs & Articles</h2>
+    <p class="section-sub">Practical tips on saving, ISAs, ETFs and more — written clearly for everyone.</p>
+    <div class="blog-grid">
+
+      <div class="blog-card">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0)">
+          <div class="blog-tag">Saving</div>
+          💰
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <i class="fas fa-calendar-alt"></i> June 2025 &bull;
+            <i class="fas fa-clock"></i> 5 min read
+          </div>
+          <h3>How to Build a £1,000 Emergency Fund in 90 Days</h3>
+          <p>Simple, actionable steps to build your financial safety net — even on a tight budget.</p>
+          <a href="#" class="btn-read">Read Article <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe)">
+          <div class="blog-tag">Investing</div>
+          📈
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <i class="fas fa-calendar-alt"></i> June 2025 &bull;
+            <i class="fas fa-clock"></i> 7 min read
+          </div>
+          <h3>ISA vs ETF: Which Is Right for Your Money in 2025?</h3>
+          <p>A clear breakdown of ISAs and ETFs — how they work and which suits your goals best.</p>
+          <a href="#" class="btn-read">Read Article <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#fef3c7,#fde68a)">
+          <div class="blog-tag">Subscriptions</div>
+          📋
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <i class="fas fa-calendar-alt"></i> May 2025 &bull;
+            <i class="fas fa-clock"></i> 4 min read
+          </div>
+          <h3>The Hidden Subscription Trap: Are You Paying for Things You Don't Use?</h3>
+          <p>Most people waste money on forgotten subscriptions. Here's how to audit and cut costs.</p>
+          <a href="#" class="btn-read">Read Article <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COMING SOON -->
+  <section id="coming-soon">
+    <div style="text-align:center; margin-bottom:44px;">
+      <span class="section-label">🚀 Roadmap</span>
+      <h2 class="section-title">What's Coming to TrackingFin</h2>
+      <p class="section-sub" style="margin:0 auto;">We're building more powerful tools for your financial journey.</p>
+    </div>
+    <div class="coming-grid">
+      <div class="coming-card">
+        <i class="fas fa-video" style="color:#6366f1"></i>
+        <h4>Finance Videos</h4>
+        <p>Expert YouTube content on investing, ISAs, ETFs and saving strategies.</p>
+        <span class="coming-label">Coming Soon</span>
+      </div>
+      <div class="coming-card">
+        <i class="fas fa-chart-line" style="color:var(--primary)"></i>
+        <h4>Portfolio Tracker</h4>
+        <p>Track your stocks & shares, monitor performance and understand your holdings.</p>
+        <span class="coming-label">Q3 2025</span>
+      </div>
+      <div class="coming-card">
+        <i class="fas fa-book" style="color:var(--accent)"></i>
+        <h4>Finance eBooks</h4>
+        <p>In-depth guides on budgeting, investing and building long-term wealth.</p>
+        <span class="coming-label">Coming Soon</span>
+      </div>
+      <div class="coming-card">
+        <i class="fas fa-chalkboard-teacher" style="color:var(--danger)"></i>
+        <h4>Online Training</h4>
+        <p>Step-by-step finance courses designed for beginners to intermediate learners.</p>
+        <span class="coming-label">Q4 2025</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section id="newsletter">
+    <div class="newsletter-box">
+      <span class="section-label"><i class="fas fa-envelope"></i> Stay Updated</span>
+      <h2 class="section-title">Get Finance Tips in Your Inbox</h2>
+      <p>Join readers getting weekly finance tips, tool updates and exclusive content from MussadLab — no spam, ever.</p>
+      <form class="newsletter-form" onsubmit="handleSubscribe(event)">
+        <input type="email" id="emailInput" placeholder="you@example.com" required/>
+        <button type="submit" class="btn-subscribe">
+          <i class="fas fa-paper-plane"></i> Subscribe
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-icon">TF</div>
+          <div class="logo-text">
+            <span>TrackingFin</span>
+            <span>by MussadLab</span>
+          </div>
+        </div>
+        <p>Smart financial tools and insights to help you track spending, invest wisely and build a better financial future.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Tools</h4>
+        <a href="#tracker">Subscription Tracker</a>
+        <a href="#coming-soon">Portfolio Tracker</a>
+        <a href="#coming-soon">Budget Planner</a>
+      </div>
+      <div class="footer-col">
+        <h4>Content</h4>
+        <a href="#blog">Blog & Articles</a>
+        <a href="#coming-soon">Videos</a>
+        <a href="#coming-soon">eBooks</a>
+        <a href="#coming-soon">Courses</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About MussadLab</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#newsletter">Contact Us</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <span>TrackingFin</span> by <span>MussadLab</span>. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMsg">Done!</span>
+  </div>
+
+  <!-- JAVASCRIPT (identical logic, zero changes needed) -->
+  <script>
+    let subscriptions = JSON.parse(localStorage.getItem('trackingfin_subs')) || [];
+    let currentFilter = 'all';
+
+    const currencySymbols = {
+      GBP: '£', USD: '$', AUD: 'A$',
+      CAD: 'C$', EUR: '€', INR: '₹',
+      NZD: 'NZ$', SGD: 'S$'
+    };
+
+    let currentSymbol = '£';
+
+    const categoryConfig = {
+      streaming:  { emoji: '🎬', color: '#6366f1', bg: '#eef2ff' },
+      music:      { emoji: '🎵', color: '#ec4899', bg: '#fdf2f8' },
+      software:   { emoji: '💻', color: '#00a876', bg: '#e6f7f2' },
+      gaming:     { emoji: '🎮', color: '#f59e0b', bg: '#fef3c7' },
+      news:       { emoji: '📰', color: '#64748b', bg: '#f1f5f9' },
+      health:     { emoji: '❤️', color: '#e53e3e', bg: '#fff5f5' },
+      education:  { emoji: '📚', color: '#8b5cf6', bg: '#f5f3ff' },
+      finance:    { emoji: '💰', color: '#38a169', bg: '#f0fff4' },
+      cloud:      { emoji: '☁️', color: '#0284c7', bg: '#e0f2fe' },
+      other:      { emoji: '📦', color: '#94a3b8', bg: '#f8fafc' }
+    };
+
+    function changeCurrency() {
+      const sel = document.getElementById('currency');
+      currentSymbol = currencySymbols[sel.value] || sel.value;
+      renderSubs();
+      updateSummary();
+    }
+
+    function addSubscription() {
+      const name    = document.getElementById('subName').value.trim();
+      const cat     = document.getElementById('subCategory').value;
+      const cost    = parseFloat(document.getElementById('subCost').value);
+      const cycle   = document.getElementById('subCycle').value;
+      const renewal = document.getElementById('subRenewal').value;
+      const notes   = document.getElementById('subNotes').value.trim();
+
+      if (!name)                 return showToast('Please enter a service name.', 'error');
+      if (isNaN(cost) || cost <= 0) return showToast('Please enter a valid cost.', 'error');
+
+      const sub = { id: Date.now(), name, category: cat, cost, cycle, renewal, notes };
+      subscriptions.push(sub);
+      saveData(); renderSubs(); updateSummary(); clearForm();
+      showToast(`"${name}" added successfully!`, 'success');
+    }
+
+    function deleteSub(id) {
+      const sub = subscriptions.find(s => s.id === id);
+      subscriptions = subscriptions.filter(s => s.id !== id);
+      saveData(); renderSubs(); updateSummary();
+      if (sub) showToast(`"${sub.name}" removed.`, 'success');
+    }
+
+    function toMonthly(cost, cycle) {
+      if (cycle === 'yearly') return cost / 12;
+      if (cycle === 'weekly') return cost * 52 / 12;
+      return cost;
+    }
+
+    function updateSummary() {
+      const monthly = subscriptions.reduce((t, s) => t + toMonthly(s.cost, s.cycle), 0);
+      document.getElementById('totalMonthly').textContent = currentSymbol + monthly.toFixed(2);
+      document.getElementById('totalAnnual').textContent  = currentSymbol + (monthly * 12).toFixed(2);
+      document.getElementById('totalDaily').textContent   = currentSymbol + (monthly / 30).toFixed(2);
+      document.getElementById('totalCount').textContent   = subscriptions.length;
+    }
+
+    function renderSubs() {
+      const list = document.getElementById('subList');
+      const filtered = currentFilter === 'all'
+        ? subscriptions
+        : subscriptions.filter(s => s.category === currentFilter);
+
+      if (filtered.length === 0) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-receipt"></i>
+            <p>${currentFilter === 'all' ? 'No subscriptions yet — add your first one above!' : 'No subscriptions in this category.'}</p>
+          </div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map(sub => {
+        const cfg = categoryConfig[sub.category] || categoryConfig.other;
+        const renewalStr = sub.renewal
+          ? new Date(sub.renewal).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
+          : 'No date set';
+        const cycleLabel = { monthly:'Monthly', yearly:'Yearly', weekly:'Weekly' }[sub.cycle];
+        const badgeClass = { monthly:'badge-monthly', yearly:'badge-yearly', weekly:'badge-weekly' }[sub.cycle];
+        const displayCost = sub.cycle === 'yearly'
+          ? `${currentSymbol}${sub.cost.toFixed(2)}/yr`
+          : sub.cycle === 'weekly'
+          ? `${currentSymbol}${sub.cost.toFixed(2)}/wk`
+          : `${currentSymbol}${sub.cost.toFixed(2)}/mo`;
+
+        return `
+          <div class="sub-item">
+            <div class="sub-icon" style="background:${cfg.bg}; color:${cfg.color}">
+              ${cfg.emoji}
+            </div>
+            <div class="sub-info">
+              <div class="sub-name">${sub.name}</div>
+              <div class="sub-meta">${sub.notes ? sub.notes + ' · ' : ''}Renews: ${renewalStr}</div>
+            </div>
+            <span class="sub-badge ${badgeClass}">${cycleLabel}</span>
+            <div class="sub-cost">${displayCost}</div>
+            <div class="sub-renewal">~${currentSymbol}${toMonthly(sub.cost, sub.cycle).toFixed(2)}/mo</div>
+            <div class="sub-actions">
+              <button class="btn-icon btn-delete" onclick="deleteSub(${sub.id})" title="Delete">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function filterSubs(cat, btn) {
+      currentFilter = cat;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderSubs();
+    }
+
+    function clearForm() {
+      ['subName','subCost','subRenewal','subNotes'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+    }
+
+    function saveData() {
+      localStorage.setItem('trackingfin_subs', JSON.stringify(subscriptions));
+    }
+
+    function showToast(msg, type = 'success') {
+      const toast = document.getElementById('toast');
+      const icon  = toast.querySelector('i');
+      document.getElementById('toastMsg').textContent = msg;
+      icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+      toast.className = `toast ${type} show`;
+      setTimeout(() => toast.classList.remove('show'), 3200);
+    }
+
+    function handleSubscribe(e) {
+      e.preventDefault();
+      const email = document.getElementById('emailInput').value;
+      showToast(`🎉 "${email}" is now subscribed!`, 'success');
+      document.getElementById('emailInput').value = '';
+    }
+
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+
+    window.onload = function () {
+      document.getElementById('subRenewal').value = new Date().toISOString().split('T')[0];
+      renderSubs();
+      updateSummary();
+    };
+  </script>
+
+</body>
+</html>
